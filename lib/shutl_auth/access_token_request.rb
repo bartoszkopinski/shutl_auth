@@ -22,8 +22,7 @@ module Shutl
       private
 
       def uri
-        #TODO: standardize naming/config of shutl_rails/shutl_resource/shutl_auth
-        @uri ||= URI Shutl.authentication_service[:url]
+        @uri ||= URI Shutl::Auth.url
       end
     end
   end
