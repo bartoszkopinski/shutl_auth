@@ -20,7 +20,7 @@ module Shutl
           yield
         rescue Shutl::UnauthorizedAccess => e
           session[:access_token] = nil
-          request_access_token
+          access_token
           yield
         end
       end
