@@ -1,8 +1,10 @@
 require File.expand_path('spec/spec_helper')
+require 'shutl_auth/access_token_request'
 
 describe Shutl::Auth::AccessTokenRequest do
   before do
-    Shutl.config do |s|
+    Shutl::Auth.config do |s|
+      s.url           = 'http://localhost:3001'
       s.client_id     = 'asdf'
       s.client_secret = 'asdf'
     end
