@@ -34,7 +34,7 @@ describe Shutl::Auth::AccessTokenRequest do
       let(:number_of_failures) { 2 }
 
       specify do
-	Shutl::Auth::AccessTokenRequest.new.access_token!.should == 'token'
+        Shutl::Auth::AccessTokenRequest.new.access_token!.should == 'token'
       end
     end
 
@@ -42,21 +42,21 @@ describe Shutl::Auth::AccessTokenRequest do
       let(:number_of_failures) { 3 }
 
       specify do
-	Shutl::Auth::AccessTokenRequest.new.access_token!.should be_nil
+        Shutl::Auth::AccessTokenRequest.new.access_token!.should be_nil
       end
     end
 
     class FailNTimesThenSucceed
       def initialize number_of_failures, access_token
-	@number_of_failures = number_of_failures
-	@access_token       = access_token
-	@counter            = 0
+        @number_of_failures = number_of_failures
+        @access_token       = access_token
+        @counter            = 0
       end
 
       def access_token!
-	@counter += 1
-	raise Errno::ECONNREFUSED if @counter <= @number_of_failures
-	@access_token
+        @counter += 1
+        raise Errno::ECONNREFUSED if @counter <= @number_of_failures
+        @access_token
       end
     end
   end
