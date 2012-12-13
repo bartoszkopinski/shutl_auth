@@ -7,7 +7,7 @@ module Shutl
         @client = Rack::OAuth2::Client.new(
           identifier:     Shutl::Auth.client_id,
           secret:         Shutl::Auth.client_secret,
-          token_endpoint: '/token',
+          token_endpoint: '/oauth2/token',
           host:           uri.host,
           port:           uri.port,
           scheme:         uri.scheme
