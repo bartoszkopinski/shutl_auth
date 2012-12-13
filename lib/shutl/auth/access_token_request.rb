@@ -5,11 +5,12 @@ module Shutl
         #TODO: handle the various exceptions that can be thrown by the OAuth2 gem
         #and turn into Shutl specific exceptions
         @client = Rack::OAuth2::Client.new(
-          identifier: Shutl::Auth.client_id,
-          secret:     Shutl::Auth.client_secret,
-          host:       uri.host,
-          port:       uri.port,
-          scheme:     uri.scheme
+          identifier:     Shutl::Auth.client_id,
+          secret:         Shutl::Auth.client_secret,
+          token_endpoint: '/token',
+          host:           uri.host,
+          port:           uri.port,
+          scheme:         uri.scheme
         )
       end
 
