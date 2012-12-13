@@ -1,5 +1,4 @@
 module Shutl
-
   module NetworkRetrySettings
     extend self
 
