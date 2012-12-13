@@ -1,6 +1,6 @@
 require "rack/oauth2"
 require "retriable/no_kernel"
-require "shutl/network_retry_settings"
+require "shutl/network_retry"
 
 require "shutl/auth/version"
 require "shutl/auth/access_token_request"

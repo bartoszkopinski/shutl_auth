@@ -14,7 +14,7 @@ module Shutl
       end
 
       def access_token!
-        Shutl.retry_connection "Authentication Service Error" do
+        Shutl::NetworkRetry.retry "Authentication Service Error" do
           @client.access_token!
         end
       end

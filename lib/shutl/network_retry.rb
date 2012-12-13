@@ -1,12 +1,16 @@
 module Shutl
-  module NetworkRetrySettings
-    extend self
-
-    def retry_connection message= "Notice: Network Exception", default=nil
+  module NetworkRetry
+    def retry message= "Notice: Network Exception", default=nil
       Retriable.retriable(retry_settings) { yield }
     rescue *network_exceptions => e
-      Airbrake.notify(e, error_message: message)
+      notifier_klass.notify(e, error_message: message)
       default
+    end
+
+    attr_writer :notifier_klass
+
+    def notifier_klass
+      @notifier_klass ||= Airbrake
     end
 
     private
@@ -30,9 +34,12 @@ module Shutl
     def test_mode
       false
     end
+
+    class << self
+      delegate :retry_connection, to: NetworkRetry
+    end
+
+    extend self
   end
 
-  class << self
-    delegate :retry_connection, to: NetworkRetrySettings
-  end
 end
