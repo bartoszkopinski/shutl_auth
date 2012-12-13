@@ -1,5 +1,4 @@
 require File.expand_path('spec/spec_helper')
-require 'shutl_auth/access_token_request'
 
 describe Shutl::Auth::AccessTokenRequest do
   before do
