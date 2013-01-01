@@ -9,14 +9,22 @@ module Shutl
     end
 
     def access_token_response!
+      c = client
+
       Shutl::NetworkRetry.retry "Authentication Service Error" do
-        client.access_token!
+        begin
+          c.access_token!
+        rescue Rack::OAuth2::Client::Error
+          raise_invalid_credentials
+        end
       end
     end
 
     private
 
     def client
+      check uri
+
       Rack::OAuth2::Client.new \
         identifier:     Shutl::Auth.client_id,
         secret:         Shutl::Auth.client_secret,
@@ -24,28 +32,20 @@ module Shutl
         host:           uri.host,
         port:           uri.port,
         scheme:         uri.scheme
-
-    rescue Rack::OAuth2::Client::Error => e
-      debugger
-      puts e.message
-      raise_invalid_credentials
-
-    rescue Exception => e
-      debugger
-      puts e.message
-
     end
 
-    def uri
-      check URI Shutl::Auth.url
 
-    rescue URI::InvalidURIError
+    def uri
+      URI Shutl::Auth.url
+    rescue
       raise_invalid_uri
     end
 
     def check uri
       return uri if uri and uri.host and uri.scheme
+      raise_invalid_uri
 
+    rescue
       raise_invalid_uri
     end
 
