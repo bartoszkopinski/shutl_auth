@@ -1,13 +1,26 @@
 #can be included in for example a Rails controller to enable easily
 #authenticating requests
-#Depends on session being defined in the included object, and this being hash-like
 module Shutl
   module Auth
     module AuthenticatedRequest
+
+      #If a method called session is not defined in the included object
+      #then it will be defined
+      def self.included base
+        unless base.instance_methods.include? :session
+          raise egg
+          base.class_eval do
+            define_method :session do
+              @session ||= {}
+            end
+          end
+        end
+      end
+
       def request_access_token
         return if session[:access_token]
 
-        access_token_response = Shutl::Auth::AccessTokenRequest.new.access_token!
+        access_token_response = Shutl::Auth.access_token!
         access_token_response.access_token
       end
 

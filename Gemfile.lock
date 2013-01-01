@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    shutl_auth (0.0.1)
+    shutl_auth (0.1.0)
       rack-oauth2
       retriable
 

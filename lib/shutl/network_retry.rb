@@ -1,4 +1,8 @@
 module Shutl
+  def self.notifier_klass= klass
+    NetworkRetry.notifier_klass = klass
+  end
+
   module NetworkRetry
     def retry message= "Notice: Network Exception", default=nil
       Retriable.retriable(retry_settings) { yield }
