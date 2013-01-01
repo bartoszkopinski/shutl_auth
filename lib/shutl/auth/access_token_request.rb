@@ -1,8 +1,9 @@
 module Shutl
   module  Auth
-    class Shutl::Error       < ::StandardError; end
-    class InvalidUrl         < Shutl::Error; end
-    class InvalidCredentials < Shutl::Error; end
+    class Shutl::Error        < ::StandardError; end
+    class InvalidUrl          < Shutl::Error; end
+    class InvalidCredentials  < Shutl::Error; end
+    class InternalServerError < Shutl::Error; end
 
     def access_token!
       access_token_response!.access_token
@@ -14,8 +15,13 @@ module Shutl
       Shutl::NetworkRetry.retry "Authentication Service Error" do
         begin
           c.access_token!
-        rescue Rack::OAuth2::Client::Error
-          raise_invalid_credentials
+        rescue Rack::OAuth2::Client::Error => e
+          case e.message
+          when /The client identifier provided is invalid, the client failed to authenticate, the client did not include its credentials, provided multiple client credentials, or used unsupported credentials type\./
+            raise_invalid_credentials
+          else
+            raise_internal_server_error e
+          end
         end
       end
     end
@@ -56,6 +62,12 @@ module Shutl
     def raise_invalid_credentials
       raise Shutl::Auth::InvalidCredentials, "Invalid credentials set, please see https://github.com/shutl/shutl_auth/blob/master/README.md"
     end
+
+    def raise_internal_server_error e
+      Shutl.notify e
+      raise Shutl::Auth::InternalServerError
+    end
+
     extend self
   end
 end

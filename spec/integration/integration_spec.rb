@@ -40,7 +40,28 @@ describe "Integration" do
       end
     end
 
+    specify "with 500 from auth server" do
+      set_auth
+
+      stub_request(:post, /.*#{Shutl::Auth.url}.*/).to_return(
+        { body: '',
+           status: 500,
+           headers: {"CONTENT_TYPE" => 'application/json'}}
+        )
+
+      Airbrake.should_receive(:notify)
+
+      expect{ Shutl::Auth.access_token!}.to raise_error Shutl::Auth::InternalServerError
+    end
+
     specify "with invalid credentials" do
+      set_auth
+      Shutl::Auth.client_id = 'egg'
+
+      VCR.use_cassette 'invalid_credentials' do
+        expect { Shutl::Auth.access_token!}.to raise_error Shutl::Auth::InvalidCredentials
+      end
+
       set_auth
       Shutl::Auth.client_id = 'egg'
 

@@ -2,26 +2,25 @@
 #authenticating requests
 module Shutl
   module Auth
-    module AuthenticatedRequest
+    module Session
+      def session
+        @session ||= {}
+      end
+    end
 
-      #If a method called session is not defined in the included object
-      #then it will be defined
+    module AuthenticatedRequest
       def self.included base
         unless base.instance_methods.include? :session
-          raise egg
           base.class_eval do
-            define_method :session do
-              @session ||= {}
-            end
+            include Shutl::Auth::Session
           end
         end
       end
 
       def request_access_token
-        return if session[:access_token]
+        return session[:access_token] if session[:access_token]
 
-        access_token_response = Shutl::Auth.access_token!
-        access_token_response.access_token
+        Shutl::Auth.access_token!
       end
 
       def access_token

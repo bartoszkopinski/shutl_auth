@@ -1,6 +1,14 @@
 module Shutl
-  def self.notifier_klass= klass
-    NetworkRetry.notifier_klass = klass
+  class << self
+    def notifier_klass= klass
+      NetworkRetry.notifier_klass = klass
+    end
+
+    def notifier_klass
+      NetworkRetry.notifier_klass
+    end
+
+    delegate :notify, to: :notifier_klass
   end
 
   module NetworkRetry
