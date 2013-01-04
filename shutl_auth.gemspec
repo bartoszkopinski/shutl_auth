@@ -22,6 +22,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'retriable'
   gem.add_dependency 'rack-oauth2'
 
+  gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec', '~> 2.11.0'
   gem.add_development_dependency 'debugger'   if $platform.to_s == 'ruby'
   gem.add_development_dependency 'ruby-debug' if $platform.to_s == 'java'
