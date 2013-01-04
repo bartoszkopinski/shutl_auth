@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Shutl::Auth::AccessTokenRequest do
-  subject { Shutl::Auth::AccessTokenRequest.new }
+describe Shutl::Auth do
+  subject { Shutl::Auth }
 
   let(:oauth_client) { mock 'oauth client' }
 
@@ -21,7 +21,7 @@ describe Shutl::Auth::AccessTokenRequest do
     end
 
     specify do
-      subject.access_token!.should == 'token response'
+      subject.access_token_response!.should == 'token response'
     end
   end
 
@@ -34,7 +34,7 @@ describe Shutl::Auth::AccessTokenRequest do
       let(:number_of_failures) { 2 }
 
       specify do
-        Shutl::Auth::AccessTokenRequest.new.access_token!.should == 'token'
+        Shutl::Auth.access_token_response!.should == 'token'
       end
     end
 
@@ -42,7 +42,7 @@ describe Shutl::Auth::AccessTokenRequest do
       let(:number_of_failures) { 3 }
 
       specify do
-        Shutl::Auth::AccessTokenRequest.new.access_token!.should be_nil
+        Shutl::Auth.access_token_response!.should be_nil
       end
     end
 

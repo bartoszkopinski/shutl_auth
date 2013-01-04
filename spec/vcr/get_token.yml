@@ -1,0 +1,59 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:3000/token
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        Z3JhbnRfdHlwZT1jbGllbnRfY3JlZGVudGlhbHM=
+    headers:
+      Authorization:
+      - Basic UVVPVEVfU0VSVklDRV9DTElFTlRfSUQ6UVVPVEVfU0VSVklDRV9DTElFTlRfU0VDUkVU
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: !binary |-
+        T0sg
+    headers:
+      !binary "Q29udGVudC1UeXBl":
+      - !binary |-
+        YXBwbGljYXRpb24vanNvbg==
+      !binary "Q29udGVudC1MZW5ndGg=":
+      - !binary |-
+        MTUw
+      !binary "Q2FjaGUtQ29udHJvbA==":
+      - !binary |-
+        bm8tc3RvcmU=
+      !binary "UHJhZ21h":
+      - !binary |-
+        bm8tY2FjaGU=
+      !binary "WC1VYS1Db21wYXRpYmxl":
+      - !binary |-
+        SUU9RWRnZQ==
+      !binary "RXRhZw==":
+      - !binary |-
+        IjkzNmFlZDkyMzFjODkxMzE3YzMwNzQwMjUyNTBmZDczIg==
+      !binary "WC1SZXF1ZXN0LUlk":
+      - !binary |-
+        ZDRhMWViZWZlMWUzMzgyNjAyNjFlMDNkNzcyNmUwYWI=
+      !binary "WC1SdW50aW1l":
+      - !binary |-
+        MC4wMTQyMzE=
+      !binary "U2VydmVy":
+      - !binary |-
+        V0VCcmljay8xLjMuMSAoUnVieS8xLjkuMy8yMDEyLTAyLTE2KQ==
+      !binary "RGF0ZQ==":
+      - !binary |-
+        VHVlLCAwMSBKYW4gMjAxMyAwNDoxNjowMCBHTVQ=
+      !binary "Q29ubmVjdGlvbg==":
+      - !binary |-
+        S2VlcC1BbGl2ZQ==
+    body:
+      encoding: US-ASCII
+      string: ! '{"access_token":"s_CagcDP8PdsGb1B0iyLvNtanSxqZeQDQtGiIYtctKzyLzxAymhe-zGJwUrjxKQpO9EUdizDT3tqLt-iFeHapg","token_type":"bearer","expires_in":788939999}'
+    http_version: 
+  recorded_at: Tue, 01 Jan 2013 04:16:00 GMT
+recorded_with: VCR 2.3.0

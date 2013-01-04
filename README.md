@@ -1,29 +1,15 @@
 # ShutlAuth
 
-TODO: Write a gem description
+You probably won't use this gem directly, as it is used by the
+[https://github.com/shutl/shutl_resource](shutl_resource) gem
 
-## Installation
+#Configuration
 
-Add this line to your application's Gemfile:
+```ruby
+Shutl::Auth.config do |c|
+  c.url           = "<API_URL_GOES_HERE>"
+  c.client_id     = "<CLIENT_ID>"
+  c.client_secret = "<CLIENT_SECRET>"
+end
+```
 
-    gem 'shutl_auth'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install shutl_auth
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
