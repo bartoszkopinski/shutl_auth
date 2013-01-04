@@ -2,6 +2,7 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'shutl/auth/version'
+$platform ||= RUBY_PLATFORM[/java/] || 'ruby'
 
 Gem::Specification.new do |gem|
   gem.name          = "shutl_auth"
@@ -11,6 +12,7 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Library used for using Shutl OAuth2 bearer tokens}
   gem.summary       = %q{Used by various gems/services for communicating with shutl oauth server}
   gem.homepage      = ""
+  gem.platform       = $platform
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
@@ -21,7 +23,8 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'rack-oauth2'
 
   gem.add_development_dependency 'rspec', '~> 2.11.0'
-  gem.add_development_dependency 'debugger'
+  gem.add_development_dependency 'debugger'   if $platform.to_s == 'ruby'
+  gem.add_development_dependency 'ruby-debug' if $platform.to_s == 'java'
   gem.add_development_dependency 'webmock', '~> 1.8.7'
   gem.add_development_dependency 'vcr'
 end
