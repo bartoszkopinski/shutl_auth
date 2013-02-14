@@ -1,7 +1,7 @@
 # ShutlAuth
 
 You probably won't use this gem directly, as it is used by the
-[https://github.com/shutl/shutl_resource](shutl_resource) gem
+[shutl_resource](https://github.com/shutl/shutl_resource) gem
 
 #Configuration
 
