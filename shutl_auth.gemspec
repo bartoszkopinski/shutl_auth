@@ -19,7 +19,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'retriable'
+  gem.add_dependency 'retriable', '~> 1.3.1'
   gem.add_dependency 'rack-oauth2'
   gem.add_dependency 'crack', '~> 0.3.2'
 
