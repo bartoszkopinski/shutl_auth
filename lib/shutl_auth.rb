@@ -6,6 +6,8 @@ require "shutl/auth/version"
 require "shutl/auth/access_token_request"
 require "shutl/auth/authenticated_request"
 
+require 'logger'
+
 module Shutl
   module Auth
     extend self
@@ -14,6 +16,12 @@ module Shutl
 
     def config
       yield self
+    end
+
+    def logger
+      return ::Rails.logger if Kernel.const_defined?(:Rails)
+      return ::Shutl.logger if Shutl.respond_to? :logger
+      Logger.new('/dev/null')
     end
   end
 end

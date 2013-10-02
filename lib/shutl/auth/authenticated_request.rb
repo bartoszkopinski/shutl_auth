@@ -18,23 +18,37 @@ module Shutl
       end
 
       def request_access_token
-        return session[:access_token] if session[:access_token]
+        Shutl::Auth.logger.debug "request_access_token: in session? #{!!session[:access_token]}"
+        return read_token if read_token
 
+        Shutl::Auth.logger.debug "requesting new access token"
         Shutl::Auth.access_token!
       end
 
       def access_token
-        session[:access_token] ||= request_access_token
+        return read_token if read_token
+        set_token request_access_token
       end
 
       def authenticated_request &blk
         begin
           yield
         rescue Shutl::UnauthorizedAccess => e
-          session[:access_token] = nil
+          Shutl::Auth.logger.debug "Shutl::UnauthorizedAccess - resetting access token"
+          set_token nil
           access_token
           yield
         end
+      end
+
+      def read_token
+        Shutl::Auth.logger.debug "access token #{session[:access_token]}"
+        session[:access_token]
+      end
+
+      def set_token(token)
+        Shutl::Auth.logger.debug "setting access token #{token}"
+        session[:access_token] = token
       end
     end
   end

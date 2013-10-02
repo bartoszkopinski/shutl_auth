@@ -13,7 +13,10 @@ module Shutl
       c = client
 
       Shutl::NetworkRetry.retry "Authentication Service Error" do
-        handling_exceptions { c.access_token! }
+        handling_exceptions do
+          Shutl::Auth.logger.debug "executing Rack::OAuth2::Client request"
+          c.access_token!
+        end
      end
     end
 
@@ -22,6 +25,7 @@ module Shutl
     def handling_exceptions
       yield
     rescue Rack::OAuth2::Client::Error => e
+      Shutl::Auth.logger.error "Rack::OAuth2::Client::Error: #{e.message}"
       case e.message
       when /The client identifier provided is invalid, the client failed to authenticate, the client did not include its credentials, provided multiple client credentials, or used unsupported credentials type\./
         raise_invalid_credentials
