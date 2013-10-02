@@ -2,24 +2,27 @@
 #authenticating requests
 module Shutl
   module Auth
-    module Session
-      def session
-        @session ||= {}
+    class Cache
+      def initialize
+        @cache = {}
+      end
+
+      def read(key)
+        @cache[key]
+      end
+
+      def write(key, value)
+        @cache[key] = value
       end
     end
 
     module AuthenticatedRequest
       def self.included base
-        unless base.instance_methods.include? :session
-          base.class_eval do
-            include Shutl::Auth::Session
-          end
-        end
+        
       end
 
       def request_access_token
-        Shutl::Auth.logger.debug "request_access_token: in session? #{!!session[:access_token]}"
-        return read_token if read_token
+        Shutl::Auth.logger.debug "request_access_token: cached? #{!!read_token}"
 
         Shutl::Auth.logger.debug "requesting new access token"
         Shutl::Auth.access_token!
@@ -42,13 +45,25 @@ module Shutl
       end
 
       def read_token
-        Shutl::Auth.logger.debug "access token #{session[:access_token]}"
-        session[:access_token]
+        cache.read(:access_token)
       end
 
       def set_token(token)
-        Shutl::Auth.logger.debug "setting access token #{token}"
-        session[:access_token] = token
+        cache.write(:access_token, token)
+      end
+
+      def cache
+        @cache ||= build_cache
+      end
+
+      private
+
+      def build_cache
+        if Kernel.const_defined?(:Rails)
+          Rails.cache
+        else
+          Cache.new
+        end
       end
     end
   end
