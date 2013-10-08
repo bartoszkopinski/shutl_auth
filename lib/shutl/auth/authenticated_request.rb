@@ -16,15 +16,29 @@ module Shutl
       end
     end
 
+    def self.cache
+      @cache ||= build_cache
+    end
+
+    private
+
+    def self.build_cache
+      if Kernel.const_defined?(:Rails)
+        ::Rails.cache
+      else
+        Cache.new
+      end
+    end
+
     module AuthenticatedRequest
       def self.included base
         
       end
 
       def request_access_token
+        return read_token if read_token
         Shutl::Auth.logger.debug "request_access_token: cached? #{!!read_token}"
 
-        Shutl::Auth.logger.debug "requesting new access token"
         Shutl::Auth.access_token!
       end
 
@@ -45,25 +59,11 @@ module Shutl
       end
 
       def read_token
-        cache.read(:access_token)
+        Shutl::Auth.cache.read(:access_token)
       end
 
       def set_token(token)
-        cache.write(:access_token, token)
-      end
-
-      def cache
-        @cache ||= build_cache
-      end
-
-      private
-
-      def build_cache
-        if Kernel.const_defined?(:Rails)
-          ::Rails.cache
-        else
-          Cache.new
-        end
+        Shutl::Auth.cache.write(:access_token, token)
       end
     end
   end
