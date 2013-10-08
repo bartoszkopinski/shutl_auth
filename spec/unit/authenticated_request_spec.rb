@@ -15,6 +15,7 @@ describe Shutl::Auth::AuthenticatedRequest do
   let(:spare_token) { '1234' }
 
   before do
+    Shutl::Auth.cache.write(:access_token, nil)
     Shutl::Auth.stub(:access_token!).and_return(token, spare_token)
   end
 
@@ -60,7 +61,7 @@ describe Shutl::Auth::AuthenticatedRequest do
 
       2.times { subject.authenticated_request &block }
 
-      subject.cache.read(:access_token).should == token
+      Shutl::Auth.cache.read(:access_token).should == token
     end
   end
 end
