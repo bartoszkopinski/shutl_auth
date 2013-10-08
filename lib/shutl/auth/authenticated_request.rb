@@ -60,7 +60,7 @@ module Shutl
 
       def build_cache
         if Kernel.const_defined?(:Rails)
-          Rails.cache
+          ::Rails.cache
         else
           Cache.new
         end
