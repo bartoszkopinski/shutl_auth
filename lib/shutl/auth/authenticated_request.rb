@@ -2,6 +2,29 @@
 #authenticating requests
 module Shutl
   module Auth
+    module AuthenticatedRequest
+      def self.included base
+      end
+
+      def access_token
+        authenticator.access_token
+      end
+
+      def authenticated_request &blk
+        authenticator.authenticated_request &blk
+      end
+
+      def request_access_token
+        authenticator.request_access_token
+      end
+
+      protected
+
+      def authenticator
+        @authenticator ||= Authenticator.new
+      end
+    end
+
     class Cache
       def initialize
         @cache = {}
@@ -27,42 +50,6 @@ module Shutl
         ::Rails.cache
       else
         Cache.new
-      end
-    end
-
-    module AuthenticatedRequest
-      def self.included base
-      end
-
-      def access_token
-        return read_token if read_token
-        set_token request_access_token
-      end
-
-      def authenticated_request &blk
-        begin
-          yield
-        rescue Shutl::UnauthorizedAccess => e
-          Shutl::Auth.logger.debug "Shutl::UnauthorizedAccess - resetting access token"
-          set_token nil
-          access_token
-          yield
-        end
-      end
-
-      def request_access_token
-        return read_token if read_token
-        Shutl::Auth.logger.debug "request_access_token: cached? #{!!read_token}"
-
-        Shutl::Auth.access_token!
-      end
-
-      def read_token
-        Shutl::Auth.cache.read(:access_token)
-      end
-
-      def set_token(token)
-        Shutl::Auth.cache.write(:access_token, token)
       end
     end
   end

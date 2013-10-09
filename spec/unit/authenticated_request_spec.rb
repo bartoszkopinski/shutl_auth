@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'ostruct'
 
 describe Shutl::Auth::AuthenticatedRequest do
 
@@ -8,57 +9,30 @@ describe Shutl::Auth::AuthenticatedRequest do
 
   subject { ToTestAuthenticatedRequest.new }
 
-  let(:token)       { 'abcd' }
-  let(:spare_token) { '1234' }
+  let(:authenticator) { OpenStruct.new(access_token: '123', request_access_token: '456')}
 
   before do
-    Shutl::Auth.cache.write(:access_token, nil)
-    Shutl::Auth.stub(:access_token!).and_return(token, spare_token)
+    Shutl::Auth::Authenticator.stub(:new).and_return(authenticator)
   end
 
   describe 'access_token' do
-    it 'requests the token' do
-      subject.access_token.should == token
-    end
-
-    it 'caches the token' do
-      subject.access_token
-
-      subject.access_token.should == token
+    it 'delegates the call to the authenticator' do
+      subject.access_token.should == '123'
     end
   end
 
   describe 'authenticated_request' do
-    it 'execute the block' do
-      block = -> { 'test' }
+    it 'delegates the call to the authenticator' do
+      block = -> { 'abcd' }
+      authenticator.stub(:authenticated_request).with(&block).and_return('abcd')
 
-      result = subject.authenticated_request &block
-
-      result.should == 'test'
+      subject.authenticated_request { block }.should == 'abcd'
     end
+  end
 
-    it 'retries if the block raise an UnauthorizedAccess' do
-      call = 0
-      block = -> do
-        t = subject.access_token
-        if call == 0
-          call += 1
-          raise Shutl::UnauthorizedAccess
-        end
-        t
-      end
-
-      result = subject.authenticated_request &block
-
-      result.should == spare_token
-    end
-
-    it 'caches the token' do
-      block = -> { subject.access_token }
-
-      2.times { subject.authenticated_request &block }
-
-      Shutl::Auth.cache.read(:access_token).should == token
+  describe 'request_access_token' do
+    it 'delegates the call to the authenticator' do
+      subject.request_access_token.should == '456'
     end
   end
 end
