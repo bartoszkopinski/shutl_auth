@@ -1,18 +1,20 @@
 require 'spec_helper'
 
-describe Shutl::Auth do
-  subject { Shutl::Auth }
+describe Shutl::Auth::AccessTokenRequest do
+  subject { Shutl::Auth::AccessTokenRequest.new opts }
+
+  let(:opts) do
+    {
+      client_id: "QUOTE_SERVICE_CLIENT_ID",
+      client_secret: "QUOTE_SERVICE_CLIENT_SECRET",
+      url: "http://localhost:3000"
+    }
+  end
 
   let(:oauth_client) { mock 'oauth client' }
 
   before do
     Rack::OAuth2::Client.stub(:new).and_return oauth_client
-
-    Shutl::Auth.config do |c|
-      c.url           =  "http://localhost:3000"
-      c.client_id     =  "QUOTE_SERVICE_CLIENT_ID"
-      c.client_secret =  "QUOTE_SERVICE_CLIENT_SECRET"
-    end
   end
 
   context 'successful request to authentication service' do
@@ -21,7 +23,7 @@ describe Shutl::Auth do
     end
 
     specify do
-      subject.access_token_response!.should == 'token response'
+      subject.access_token_response.should == 'token response'
     end
   end
 
@@ -34,7 +36,7 @@ describe Shutl::Auth do
       let(:number_of_failures) { 2 }
 
       specify do
-        Shutl::Auth.access_token_response!.should == 'token'
+        subject.access_token_response.should == 'token'
       end
     end
 
@@ -42,7 +44,7 @@ describe Shutl::Auth do
       let(:number_of_failures) { 3 }
 
       specify do
-        Shutl::Auth.access_token_response!.should be_nil
+        subject.access_token_response.should be_nil
       end
     end
 

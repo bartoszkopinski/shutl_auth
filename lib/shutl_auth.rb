@@ -10,9 +10,14 @@ require "shutl/auth/authenticator"
 require 'logger'
 
 module Shutl
-  class UnauthorizedAccess < StandardError ; end
+  class UnauthorizedAccess < ::StandardError ; end
+  class Error              < ::StandardError;  end
 
   module Auth
+    class InvalidUrl          < Shutl::Error; end
+    class InvalidCredentials  < Shutl::Error; end
+    class InternalServerError < Shutl::Error; end
+
     extend self
 
     attr_accessor :client_id, :client_secret, :url
