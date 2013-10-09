@@ -5,10 +5,13 @@ require "shutl/network_retry"
 require "shutl/auth/version"
 require "shutl/auth/access_token_request"
 require "shutl/auth/authenticated_request"
+require "shutl/auth/authenticator"
 
 require 'logger'
 
 module Shutl
+  class UnauthorizedAccess < StandardError ; end
+
   module Auth
     extend self
 

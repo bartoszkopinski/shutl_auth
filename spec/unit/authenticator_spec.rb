@@ -1,12 +1,7 @@
 require 'spec_helper'
 
-describe Shutl::Auth::AuthenticatedRequest do
-
-  class ToTestAuthenticatedRequest
-    include Shutl::Auth::AuthenticatedRequest
-  end
-
-  subject { ToTestAuthenticatedRequest.new }
+describe Shutl::Auth::Authenticator do
+  subject { described_class.new }
 
   let(:token)       { 'abcd' }
   let(:spare_token) { '1234' }
@@ -59,6 +54,18 @@ describe Shutl::Auth::AuthenticatedRequest do
       2.times { subject.authenticated_request &block }
 
       Shutl::Auth.cache.read(:access_token).should == token
+    end
+  end
+
+  describe 'token cache' do
+    subject { described_class.new(cache_key: :an_other_cache) }
+
+    it 'caches the token with the provided value' do
+      block = -> { subject.access_token }
+
+      2.times { subject.authenticated_request &block }
+
+      Shutl::Auth.cache.read(:an_other_cache).should == token
     end
   end
 end
