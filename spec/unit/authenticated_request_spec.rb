@@ -35,4 +35,22 @@ describe Shutl::Auth::AuthenticatedRequest do
       subject.request_access_token.should == '456'
     end
   end
+
+  describe 'default configuration' do
+    before do
+      Shutl::Auth.config do |s|
+        s.url           = 'http://localhost:3000'
+        s.client_id     = 'CLIENT_ID'
+        s.client_secret = 'CLIENT_SECRET'
+      end
+    end
+
+    it 'uses the default Shutl::Auth value to authenticate' do
+      Shutl::Auth::Authenticator.should_receive(:new).
+        with(client_id: 'CLIENT_ID', client_secret: 'CLIENT_SECRET', url: 'http://localhost:3000').
+        and_return(authenticator)
+
+      subject.request_access_token
+    end
+  end
 end

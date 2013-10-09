@@ -21,7 +21,7 @@ module Shutl
       protected
 
       def authenticator
-        @authenticator ||= Authenticator.new
+        @authenticator ||= Authenticator.new client_id: Shutl::Auth.client_id, client_secret: Shutl::Auth.client_secret , url: Shutl::Auth.url
       end
     end
 
