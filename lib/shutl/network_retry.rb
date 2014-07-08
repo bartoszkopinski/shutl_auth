@@ -33,7 +33,11 @@ module Shutl
         Errno::ECONNREFUSED,
         EOFError,
         Net::HTTPBadResponse,
-        Errno::ETIMEDOUT
+        Errno::ETIMEDOUT,
+        Faraday::TimeoutError,
+        Faraday::ConnectionFailed,
+        Faraday::ParsingError,
+        Faraday::SSLError
       ]
     end
 

@@ -33,3 +33,10 @@ module Shutl
     end
   end
 end
+
+module Faraday
+  class TimeoutError ; end
+  class ConnectionFailed ; end
+  class ParsingError ; end
+  class SSLError ; end
+end
