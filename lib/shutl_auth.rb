@@ -10,7 +10,15 @@ require "shutl/auth/authenticator"
 require 'logger'
 
 module Shutl
-  class UnauthorizedAccess < ::StandardError ; end
+  class UnauthorizedAccess < ::StandardError
+    attr_reader :status
+
+    def initialize(message = nil, status = nil)
+      super(message)
+      @status = status
+    end
+  end
+
   class Error              < ::StandardError;  end
 
   module Auth
