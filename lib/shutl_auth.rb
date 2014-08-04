@@ -6,6 +6,7 @@ require "shutl/auth/version"
 require "shutl/auth/access_token_request"
 require "shutl/auth/authenticated_request"
 require "shutl/auth/authenticator"
+require "faraday"
 
 require 'logger'
 
@@ -40,11 +41,4 @@ module Shutl
       Logger.new('/dev/null')
     end
   end
-end
-
-module Faraday
-  class TimeoutError ; end
-  class ConnectionFailed ; end
-  class ParsingError ; end
-  class SSLError ; end
 end

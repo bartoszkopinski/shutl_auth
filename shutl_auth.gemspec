@@ -22,6 +22,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'retriable', '~> 1.3.1'
   gem.add_dependency 'rack-oauth2'
   gem.add_dependency 'crack', '~> 0.3.2'
+  gem.add_dependency 'faraday'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec', '~> 2.11.0'
