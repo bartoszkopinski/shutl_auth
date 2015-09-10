@@ -21,13 +21,10 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'retriable', '~> 1.3.1'
   gem.add_dependency 'rack-oauth2'
-  gem.add_dependency 'crack', '~> 0.3.2'
   gem.add_dependency 'faraday'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec', '~> 2.11.0'
-  gem.add_development_dependency 'debugger'   if $platform.to_s == 'ruby'
-  gem.add_development_dependency 'ruby-debug' if $platform.to_s == 'java'
   gem.add_development_dependency 'webmock', '~> 1.8.7'
   gem.add_development_dependency 'vcr'
 end
